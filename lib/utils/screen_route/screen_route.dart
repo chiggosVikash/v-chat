@@ -7,6 +7,8 @@ class ScreenRoute {
     switch (settings.name) {
       case "/":
         return MaterialPageRoute(builder: (context) => const Homepage());
+      case Homepage.routeAddress:
+        return MaterialPageRoute(builder: (context) => const Homepage());
       case LoginScreen.routeAddress:
         return MaterialPageRoute(builder: (context) => const LoginScreen());
 

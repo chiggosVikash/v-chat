@@ -38,6 +38,10 @@ dependencies:
   flutter_riverpod: ^2.4.8
   json_annotation: ^4.8.1
   google_sign_in: ^6.1.6
+  isar: ^3.1.0
+  isar_flutter_libs: ^3.1.0
+  path_provider: ^2.1.1
+
   
 
 dev_dependencies:
@@ -51,9 +55,11 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   custom_lint: ^0.5.7
-  riverpod_lint: ^2.3.6
+  riverpod_lint: ^2.1.1
   json_serializable: ^6.7.1
   build_runner: ^2.4.6
+  isar_generator: ^3.1.0
+  analyzer: ^5.13.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

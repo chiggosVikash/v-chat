@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:v_chat/features/homepage/data/models/user_model.dart';
+import 'package:v_chat/features/login/data/models/verification_model.dart';
 
+import '../models/user_model.dart';
 import 'login_data_source.dart';
 
+///
 class LoginDataSourceImpl implements LoginDataSource {
   final _firebaseAuth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
@@ -17,8 +19,23 @@ class LoginDataSourceImpl implements LoginDataSource {
     }
   }
 
+  /// Asynchronously authenticates a user using Google Sign-In and Firebase Authentication.
+  ///
+  /// This method initiates the Google Sign-In process, retrieves the user's Google account
+  /// information, and uses it to authenticate the user through Firebase Authentication.
+  ///
+  /// If the authentication is successful, a [UserModel] instance containing the user's
+  /// information is returned. If the user cancels the Google Sign-In process or if any
+  /// error occurs during authentication, the method returns `null`. In case of an error,
+  /// an [Exception] is thrown with a descriptive error message.
+  ///
+  /// Returns:
+  /// - A [Future] that completes with a [UserModel] if authentication is successful, or
+  ///   `null` if the user cancels the Google Sign-In process or if any error occurs.
+  ///
+  /// Throws an [Exception] if any error occurs during the authentication process.
   @override
-  Future<UserModel?> loginWithGoogle(UserModel userModel) async {
+  Future<UserModel?> loginWithGoogle() async {
     try {
       final userAccount = await _googleSignIn.signIn();
       if (userAccount == null) return null;
@@ -48,17 +65,16 @@ class LoginDataSourceImpl implements LoginDataSource {
   ///
   /// Throws an [Exception] if the user is not found during the verification process.
   ///
-
   @override
-  Future<String> verifyPhone(String phone) async {
+  Future<VerificationModel> verifyPhone(String phone) async {
     try {
-      String vId = '';
+      String vId = "";
+      String? otp;
       await _firebaseAuth.verifyPhoneNumber(
-        verificationCompleted: (credential) async {
-          final status = await _firebaseAuth.signInWithCredential(credential);
-          if (status.user == null) {
-            throw Exception('LoginExecption: User not found');
-          }
+        phoneNumber: phone,
+        verificationCompleted: (credential) {
+          vId = credential.verificationId ?? "";
+          otp = credential.smsCode;
         },
         verificationFailed: (exeception) {
           throw Exception(exeception);
@@ -68,7 +84,9 @@ class LoginDataSourceImpl implements LoginDataSource {
         },
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
-      return vId;
+
+      /// returns verificationId and otp
+      return VerificationModel(verificationId: vId, otp: otp);
     } catch (e) {
       rethrow;
     }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:v_chat/features/login/presentation/providers/verify_phone_provider.dart';
 import 'package:v_chat/features/login/presentation/widgets/login_as_google_w.dart';
 import 'package:v_chat/features/login/presentation/widgets/login_as_phone_w.dart';
+import 'package:v_chat/features/login/presentation/widgets/login_button_w.dart';
 import 'package:v_chat/features/login/presentation/widgets/logo_w.dart';
+import 'package:v_chat/features/login/presentation/widgets/verify_button_w.dart';
 import 'package:v_chat/utils/extensions/context_extension.dart';
-
-import '../widgets/login_button_w.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   static const routeAddress = "/login";
@@ -17,10 +18,16 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _phoneController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _surnameController = TextEditingController();
+  final _otpController = TextEditingController();
 
   @override
   void dispose() {
     _phoneController.dispose();
+    _nameController.dispose();
+    _surnameController.dispose();
+    _otpController.dispose();
     super.dispose();
   }
 
@@ -38,9 +45,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: <Widget>[
               const LogoW(),
               SizedBox(height: context.height * .1),
-              LoginAsPhoneW(phoneController: _phoneController),
+              LoginAsPhoneW(
+                  phoneController: _phoneController,
+                  otpController: _otpController,
+                  nameController: _nameController,
+                  surnameController: _surnameController),
               const SizedBox(height: 20),
-              const LoginButton(),
+              Consumer(
+                builder: (context, ref, child) {
+                  final verificationData = ref.watch(verifyPhoneNoProvider);
+                  if (verificationData.value == null ||
+                      verificationData.value!.otp == null) {
+                    return VerifyButtonW(
+                      phone: "+91${_phoneController.text.trim()}",
+                    );
+                  }
+                  return const LoginButton();
+                },
+              ),
               SizedBox(
                 height: context.height * .02,
               ),
