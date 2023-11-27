@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:v_chat/features/homepage/presentation/screens/homepage.dart';
+import 'package:v_chat/features/connections/presentation/screens/connections_screen.dart';
 import 'package:v_chat/features/login/presentation/providers/login_provider.dart';
 import 'package:v_chat/utils/dialogues/error_dialogue.dart';
 import 'package:v_chat/utils/dialogues/processing_dialogue.dart';
@@ -29,8 +29,8 @@ class LoginAsGoogleW extends ConsumerWidget {
             return loginValue.when(
                 data: (confirmData) {
                   Future(() {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, Homepage.routeAddress, (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(context,
+                        ConnectionScreen.routeAddress, (route) => false);
                   });
                   return const SuccessDialogue(
                       title: "Login",

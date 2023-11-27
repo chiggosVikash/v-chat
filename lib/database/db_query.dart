@@ -1,4 +1,4 @@
-import '../../../features/login/data/models/user_model.dart';
+import '../features/login/data/models/user_model.dart';
 
 abstract class DbQuery {
   Future<bool> createUser(UserModel user);

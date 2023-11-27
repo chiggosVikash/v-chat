@@ -1,5 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:v_chat/database/isar_local/query/local_db_query.dart';
+import 'package:v_chat/database/db_query.dart';
 import 'package:v_chat/features/login/data/models/user_model.dart';
 
 import '../setup/isar_setup.dart';
