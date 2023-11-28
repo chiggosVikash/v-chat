@@ -27,7 +27,11 @@ class LoginP extends AsyncNotifier<UserModel?> {
     state = const AsyncLoading();
     try {
       final user = await _loginUsecase.loginWithGoogle();
-      await _loginUsecase.createUser(user!);
+      final isUserExist = await _loginUsecase.isUserExist(email: user!.email);
+
+      if (isUserExist == false) {
+        await _loginUsecase.createUser(user);
+      }
       state = AsyncData(user);
     } catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:v_chat/features/connections/data/models/connection_model.dart';
+import 'package:v_chat/features/login/data/models/user_model.dart';
 
 import 'connection_datasource.dart';
 
@@ -63,6 +64,26 @@ class ConnectionDatasourceImpl implements ConnectionDatasource {
             value.docs.map((e) => ConnectionModel.fromJson(e.data())).toList();
         return connections;
       });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Searches for a connection with the specified [connectionId].
+  /// Returns a [UserModel] if the connection is found, otherwise returns null.
+  /// Throws an exception if an error occurs during the search.
+  @override
+  Future<UserModel?> searchConnections({
+    required String connectionId,
+  }) async {
+    try {
+      final connectionData =
+          await _firestore.collection("users").doc(connectionId).get();
+      if (connectionData.exists) {
+        final connection = UserModel.fromJson(connectionData.data()!);
+        return connection;
+      }
+      return null;
     } catch (e) {
       rethrow;
     }

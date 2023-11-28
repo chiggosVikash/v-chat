@@ -47,4 +47,13 @@ class FirebaseQueryImpl implements DbQuery {
       rethrow;
     }
   }
+
+  @override
+  Future<bool> isUserExist({String? email, String? phone}) {
+    try {
+      return isValidUser(email: email, phone: phone);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

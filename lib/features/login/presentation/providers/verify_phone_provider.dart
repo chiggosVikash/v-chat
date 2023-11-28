@@ -18,6 +18,17 @@ class VerifyPhoneP extends AutoDisposeAsyncNotifier<VerificationModel> {
     return VerificationModel(verificationId: "", otp: null);
   }
 
+  /// Verifies the given phone number.
+  ///
+  /// This method sets the state to [AsyncLoading] before making the verification request.
+  /// If the verification is successful, the state is set to [AsyncData] with the result.
+  /// If an error occurs during the verification process, the state is set to [AsyncError]
+  /// with the error and stack trace. If the app is running in debug mode, the error is rethrown.
+  ///
+  /// Parameters:
+  /// - [phone]: The phone number to verify.
+  ///
+  /// Returns: A [Future] that completes when the verification process is finished.
   Future<void> verifyPhone(String phone) async {
     state = const AsyncLoading();
     try {

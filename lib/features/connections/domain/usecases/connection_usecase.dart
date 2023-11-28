@@ -2,6 +2,7 @@ import 'package:v_chat/features/connections/data/data_source/connection_datasour
 import 'package:v_chat/features/connections/data/models/connection_model.dart';
 import 'package:v_chat/features/connections/domain/repos/connection_repo.dart';
 import 'package:v_chat/features/connections/domain/repos/connection_repo_impl.dart';
+import 'package:v_chat/features/login/data/models/user_model.dart';
 
 class ConnectionUsecase {
   final ConnectionRepo _connectionRepo =
@@ -23,5 +24,13 @@ class ConnectionUsecase {
       {required String connectionId, required String userEmail}) async {
     return await _connectionRepo.deleteConnection(
         connectionId: connectionId, userEmail: userEmail);
+  }
+
+  Future<UserModel?> searchConnections({
+    required String connectionId,
+  }) async {
+    return await _connectionRepo.searchConnections(
+      connectionId: connectionId,
+    );
   }
 }
